@@ -411,6 +411,10 @@
                         <button class="criterion-btn" data-criterion="independant" onclick="toggleCriterion(this)">Indépendant</button>
                         <button class="criterion-btn" data-criterion="joueur" onclick="toggleCriterion(this)">Joueur</button>
                         <button class="criterion-btn" data-criterion="protecteur" onclick="toggleCriterion(this)">Protecteur</button>
+                        <button class="criterion-btn" data-criterion="curieux" onclick="toggleCriterion(this)">Curieux</button>
+                        <button class="criterion-btn" data-criterion="sociable" onclick="toggleCriterion(this)">Sociable</button>
+                        <button class="criterion-btn" data-criterion="docile" onclick="toggleCriterion(this)">Docile</button>
+                        <button class="criterion-btn" data-criterion="tetu" onclick="toggleCriterion(this)">Têtu</button>
                     </div>
                 </div>
 
@@ -430,6 +434,9 @@
                         <button class="criterion-btn" data-criterion="bon_animaux" onclick="toggleCriterion(this)">Bon avec animaux</button>
                         <button class="criterion-btn" data-criterion="appartement" onclick="toggleCriterion(this)">Vie en appartement</button>
                         <button class="criterion-btn" data-criterion="facile_eduquer" onclick="toggleCriterion(this)">Facile à éduquer</button>
+                        <button class="criterion-btn" data-criterion="tolere_solitude" onclick="toggleCriterion(this)">Tolère la solitude</button>
+                        <button class="criterion-btn" data-criterion="supporte_froid" onclick="toggleCriterion(this)">Supporte le froid</button>
+                        <button class="criterion-btn" data-criterion="supporte_chaleur" onclick="toggleCriterion(this)">Supporte la chaleur</button>
                     </div>
                 </div>
 
@@ -449,6 +456,10 @@
                         <button class="criterion-btn" data-criterion="peu_bave" onclick="toggleCriterion(this)">Bave peu</button>
                         <button class="criterion-btn" data-criterion="intelligent" onclick="toggleCriterion(this)">Intelligent</button>
                         <button class="criterion-btn" data-criterion="vigilant" onclick="toggleCriterion(this)">Vigilant</button>
+                        <button class="criterion-btn" data-criterion="instinct_faible" onclick="toggleCriterion(this)">Faible instinct de chasse</button>
+                        <button class="criterion-btn" data-criterion="instinct_fort" onclick="toggleCriterion(this)">Fort instinct de chasse</button>
+                        <button class="criterion-btn" data-criterion="peu_odeur" onclick="toggleCriterion(this)">Peu d'odeur</button>
+                        <button class="criterion-btn" data-criterion="discret" onclick="toggleCriterion(this)">Discret</button>
                     </div>
                 </div>
 
@@ -485,87 +496,165 @@
         };
 
         const dogBreeds = [
-            {
-                name: "Labrador Retriever",
-                traits: ["grand", "poils_courts", "peu_entretien", "energique", "affectueux", "joueur", "tres_sportif", "bon_enfants", "bon_animaux", "facile_eduquer", "intelligent", "peu_aboie", "peu_bave"]
-            },
-            {
-                name: "Berger Allemand",
-                traits: ["grand", "poils_longs", "energique", "protecteur", "intelligent", "tres_sportif", "bon_enfants", "facile_eduquer", "vigilant", "peu_bave"]
-            },
-            {
-                name: "Golden Retriever",
-                traits: ["grand", "poils_longs", "affectueux", "energique", "joueur", "tres_sportif", "bon_enfants", "bon_animaux", "facile_eduquer", "intelligent", "peu_aboie"]
-            },
-            {
-                name: "Bouledogue Français",
-                traits: ["petit", "poils_courts", "peu_entretien", "calme", "affectueux", "peu_sport", "appartement", "bon_enfants", "peu_aboie", "cout_nourriture_faible"]
-            },
-            {
-                name: "Caniche",
-                traits: ["moyen", "poils_longs", "hypoallergenique", "intelligent", "affectueux", "joueur", "sport_modere", "bon_enfants", "facile_eduquer", "peu_bave", "peu_aboie"]
-            },
-            {
-                name: "Beagle",
-                traits: ["moyen", "poils_courts", "peu_entretien", "energique", "joueur", "affectueux", "tres_sportif", "bon_enfants", "bon_animaux", "cout_entretien_faible"]
-            },
-            {
-                name: "Chihuahua",
-                traits: ["petit", "poils_courts", "peu_entretien", "vigilant", "protecteur", "peu_sport", "appartement", "cout_achat_faible", "cout_nourriture_faible", "cout_entretien_faible"]
-            },
-            {
-                name: "Berger Australien",
-                traits: ["moyen", "poils_longs", "energique", "intelligent", "joueur", "tres_sportif", "protecteur", "bon_enfants", "facile_eduquer", "vigilant"]
-            },
-            {
-                name: "Yorkshire Terrier",
-                traits: ["petit", "poils_longs", "hypoallergenique", "affectueux", "vigilant", "peu_sport", "appartement", "intelligent", "cout_nourriture_faible"]
-            },
-            {
-                name: "Boxer",
-                traits: ["grand", "poils_courts", "peu_entretien", "energique", "joueur", "affectueux", "protecteur", "tres_sportif", "bon_enfants", "intelligent"]
-            },
-            {
-                name: "Cavalier King Charles",
-                traits: ["petit", "poils_longs", "calme", "affectueux", "peu_sport", "appartement", "bon_enfants", "bon_animaux", "facile_eduquer", "peu_aboie"]
-            },
-            {
-                name: "Husky Sibérien",
-                traits: ["grand", "poils_longs", "energique", "independant", "joueur", "tres_sportif", "bon_animaux", "intelligent", "vigilant"]
-            },
-            {
-                name: "Shih Tzu",
-                traits: ["petit", "poils_longs", "calme", "affectueux", "peu_sport", "appartement", "bon_enfants", "peu_aboie", "cout_nourriture_faible"]
-            },
-            {
-                name: "Doberman",
-                traits: ["grand", "poils_courts", "peu_entretien", "energique", "protecteur", "intelligent", "tres_sportif", "facile_eduquer", "vigilant", "peu_bave"]
-            },
-            {
-                name: "Carlin",
-                traits: ["petit", "poils_courts", "peu_entretien", "calme", "affectueux", "peu_sport", "appartement", "bon_enfants", "peu_aboie", "cout_nourriture_faible"]
-            },
-            {
-                name: "Border Collie",
-                traits: ["moyen", "poils_longs", "energique", "intelligent", "joueur", "tres_sportif", "facile_eduquer", "vigilant", "protecteur"]
-            },
-            {
-                name: "Bichon Frisé",
-                traits: ["petit", "poils_longs", "hypoallergenique", "affectueux", "joueur", "sport_modere", "appartement", "bon_enfants", "peu_aboie", "peu_bave"]
-            },
-            {
-                name: "Rottweiler",
-                traits: ["grand", "poils_courts", "peu_entretien", "protecteur", "calme", "intelligent", "sport_modere", "vigilant", "facile_eduquer"]
-            },
-            {
-                name: "Jack Russell Terrier",
-                traits: ["petit", "poils_courts", "peu_entretien", "energique", "joueur", "tres_sportif", "intelligent", "vigilant", "cout_entretien_faible"]
-            },
-            {
-                name: "Terre-Neuve",
-                traits: ["grand", "poils_longs", "calme", "affectueux", "protecteur", "sport_modere", "bon_enfants", "bon_animaux", "intelligent", "facile_eduquer"]
-            }
-        ];
+    {
+        name: "Labrador Retriever",
+        traits: ["grand","poils_courts","peu_entretien","energique","affectueux","joueur","tres_sportif","bon_enfants","bon_animaux","facile_eduquer","intelligent","peu_aboie","peu_bave","sociable"]
+    },
+    {
+        name: "Berger Allemand",
+        traits: ["grand","poils_longs","energique","protecteur","intelligent","tres_sportif","bon_enfants","facile_eduquer","vigilant","peu_bave"]
+    },
+    {
+        name: "Golden Retriever",
+        traits: ["grand","poils_longs","affectueux","energique","joueur","tres_sportif","bon_enfants","bon_animaux","facile_eduquer","intelligent","peu_aboie"]
+    },
+    {
+        name: "Bouledogue Français",
+        traits: ["petit","poils_courts","peu_entretien","calme","affectueux","peu_sport","appartement","bon_enfants","peu_aboie","cout_nourriture_faible"]
+    },
+    {
+        name: "Caniche",
+        traits: ["moyen","poils_longs","hypoallergenique","intelligent","affectueux","joueur","sport_modere","bon_enfants","facile_eduquer","peu_bave","peu_aboie"]
+    },
+    {
+        name: "Beagle",
+        traits: ["moyen","poils_courts","peu_entretien","energique","joueur","affectueux","tres_sportif","bon_enfants","bon_animaux","cout_entretien_faible"]
+    },
+    {
+        name: "Chihuahua",
+        traits: ["petit","poils_courts","peu_entretien","vigilant","protecteur","peu_sport","appartement","cout_achat_faible","cout_nourriture_faible","cout_entretien_faible"]
+    },
+    {
+        name: "Berger Australien",
+        traits: ["moyen","poils_longs","energique","intelligent","joueur","tres_sportif","protecteur","bon_enfants","facile_eduquer","vigilant"]
+    },
+    {
+        name: "Yorkshire Terrier",
+        traits: ["petit","poils_longs","hypoallergenique","affectueux","vigilant","peu_sport","appartement","intelligent","cout_nourriture_faible"]
+    },
+    {
+        name: "Boxer",
+        traits: ["grand","poils_courts","peu_entretien","energique","joueur","affectueux","protecteur","tres_sportif","bon_enfants","intelligent"]
+    },
+    {
+        name: "Cavalier King Charles",
+        traits: ["petit","poils_longs","calme","affectueux","peu_sport","appartement","bon_enfants","bon_animaux","facile_eduquer","peu_aboie"]
+    },
+    {
+        name: "Husky Sibérien",
+        traits: ["grand","poils_longs","energique","independant","joueur","tres_sportif","bon_animaux","intelligent","vigilant","supporte_froid"]
+    },
+    {
+        name: "Shih Tzu",
+        traits: ["petit","poils_longs","calme","affectueux","peu_sport","appartement","bon_enfants","peu_aboie","cout_nourriture_faible"]
+    },
+    {
+        name: "Doberman",
+        traits: ["grand","poils_courts","peu_entretien","energique","protecteur","intelligent","tres_sportif","facile_eduquer","vigilant","peu_bave"]
+    },
+    {
+        name: "Carlin",
+        traits: ["petit","poils_courts","peu_entretien","calme","affectueux","peu_sport","appartement","bon_enfants","peu_aboie","cout_nourriture_faible"]
+    },
+    {
+        name: "Border Collie",
+        traits: ["moyen","poils_longs","energique","intelligent","joueur","tres_sportif","facile_eduquer","vigilant","protecteur"]
+    },
+    {
+        name: "Bichon Frisé",
+        traits: ["petit","poils_longs","hypoallergenique","affectueux","joueur","sport_modere","appartement","bon_enfants","peu_aboie","peu_bave"]
+    },
+    {
+        name: "Rottweiler",
+        traits: ["grand","poils_courts","peu_entretien","protecteur","calme","intelligent","sport_modere","vigilant","facile_eduquer"]
+    },
+    {
+        name: "Jack Russell Terrier",
+        traits: ["petit","poils_courts","peu_entretien","energique","joueur","tres_sportif","intelligent","vigilant","cout_entretien_faible"]
+    },
+    {
+        name: "Terre-Neuve",
+        traits: ["grand","poils_longs","calme","affectueux","protecteur","sport_modere","bon_enfants","bon_animaux","intelligent","facile_eduquer","supporte_froid"]
+    },
+
+    // Nouveaux
+    {
+        name: "Samoyede",
+        traits: ["grand","poils_longs","entretien_eleve","energique","affectueux","joueur","sport_modere","bon_enfants","bon_animaux","intelligent","vigilant","sociable","supporte_froid"]
+    },
+    {
+        name: "Saint_Bernard",
+        traits: ["grand","poils_longs","entretien_moyen","calme","affectueux","protecteur","peu_sport","bon_enfants","intelligent","vigilant","peu_aboie","supporte_froid","bave_beaucoup"]
+    },
+    {
+        name: "Malamute_Alaska",
+        traits: ["grand","poils_longs","entretien_moyen","energique","independant","tres_sportif","bon_enfants","intelligent","vigilant","sociable","supporte_froid"]
+    },
+    {
+        name: "Akita_Inu",
+        traits: ["grand","poils_longs","entretien_moyen","calme","independant","protecteur","sport_modere","vigilant","peu_aboie","intelligent","supporte_froid"]
+    },
+    {
+        name: "Shiba_Inu",
+        traits: ["petit","poils_courts","entretien_moyen","independant","joueur","energique","sport_modere","vigilant","intelligent"]
+    },
+    {
+        name: "Corgi",
+        traits: ["petit","poils_courts","entretien_moyen","joueur","affectueux","energique","sport_modere","bon_enfants","intelligent","vigilant"]
+    },
+    {
+        name: "Setter_Irlandais",
+        traits: ["grand","poils_longs","entretien_eleve","energique","joueur","tres_sportif","bon_enfants","sociable","intelligent"]
+    },
+    {
+        name: "Cane_Corso",
+        traits: ["grand","poils_courts","entretien_facile","protecteur","calme","sport_modere","vigilant","bon_enfants","intelligent"]
+    },
+    {
+        name: "Levriere_Afghan",
+        traits: ["grand","poils_longs","entretien_eleve","independant","calme","tres_sportif","intelligent"]
+    },
+    {
+        name: "Whippet",
+        traits: ["moyen","poils_courts","entretien_facile","calme","affectueux","tres_sportif","bon_enfants","peu_aboie"]
+    },
+    {
+        name: "Bull_Terrier",
+        traits: ["moyen","poils_courts","entretien_facile","joueur","energique","affectueux","sport_modere","bon_enfants"]
+    },
+    {
+        name: "Shar_Pei",
+        traits: ["moyen","poils_courts","entretien_facile","calme","independant","protecteur","sport_modere","peu_aboie"]
+    },
+    {
+        name: "Chow_Chow",
+        traits: ["moyen","poils_longs","entretien_eleve","independant","calme","sport_modere","vigilant","supporte_froid"]
+    },
+    {
+        name: "Dalmatien",
+        traits: ["grand","poils_courts","entretien_facile","energique","joueur","tres_sportif","sociable","bon_enfants"]
+    },
+    {
+        name: "Teckel",
+        traits: ["petit","poils_courts","entretien_facile","joueur","independant","sport_modere","peu_aboie"]
+    },
+    {
+        name: "Montagne_Pyrenees",
+        traits: ["grand","poils_longs","entretien_eleve","calme","protecteur","peu_sport","vigilant","bon_enfants","supporte_froid","bave_peu"]
+    },
+    {
+        name: "Malinois",
+        traits: ["grand","poils_courts","entretien_facile","energique","intelligent","vigilant","tres_sportif","facile_eduquer","protecteur"]
+    },
+    {
+        name: "Lhassa_Apso",
+        traits: ["petit","poils_longs","entretien_eleve","calme","independant","peu_sport","peu_aboie","hypoallergenique"]
+    },
+    {
+        name: "Bouledogue_Anglais",
+        traits: ["moyen","poils_courts","entretien_facile","calme","affectueux","peu_sport","bon_enfants","bave_beaucoup","peu_aboie"]
+    }
+];
 
         const exclusiveGroups = [
             { category: "taille", values: ["petit", "moyen", "grand"] },
@@ -767,15 +856,29 @@
                 petit: "Petit", moyen: "Moyen", grand: "Grand",
                 poils_courts: "Poils courts", poils_longs: "Poils longs",
                 peu_entretien: "Peu d'entretien", hypoallergenique: "Hypoallergénique",
+
                 calme: "Calme", energique: "Énergique", affectueux: "Affectueux",
                 independant: "Indépendant", joueur: "Joueur", protecteur: "Protecteur",
+
+                curieux: "Curieux", sociable: "Sociable", docile: "Docile", tetu: "Têtu",
+
                 peu_sport: "Peu de sport", sport_modere: "Sport modéré", tres_sportif: "Très sportif",
+
                 bon_enfants: "Bon avec enfants", bon_animaux: "Bon avec animaux",
                 appartement: "Appartement", facile_eduquer: "Facile à éduquer",
+                tolere_solitude: "Tolère la solitude",
+                supporte_froid: "Supporte le froid", supporte_chaleur: "Supporte la chaleur",
+
                 cout_achat_faible: "Achat abordable", cout_entretien_faible: "Entretien économique",
                 cout_nourriture_faible: "Nourriture économique",
+
                 peu_aboie: "Aboie peu", peu_bave: "Bave peu",
-                intelligent: "Intelligent", vigilant: "Vigilant"
+                intelligent: "Intelligent", vigilant: "Vigilant",
+
+                instinct_faible: "Faible instinct de chasse",
+                instinct_fort: "Fort instinct de chasse",
+
+                peu_odeur: "Peu d'odeur", discret: "Discret"
             };
         }
 
