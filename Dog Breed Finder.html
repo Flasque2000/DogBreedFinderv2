@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trouvez votre chien idéal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        .criteria-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .priority-selector {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #e9ecef;
+        }
+
+        .priority-selector h3 {
+            color: #495057;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .priority-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .priority-btn {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #dee2e6;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .priority-btn.active-essential {
+            background: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+
+        .priority-btn.active-desired {
+            background: #0dcaf0;
+            color: white;
+            border-color: #0dcaf0;
+        }
+
+        .category {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #e9ecef;
+        }
+
+        .category h3 {
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .category-icon {
+            font-size: 1.5em;
+        }
+
+        .criteria-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 10px;
+        }
+
+        .criterion-btn {
+            padding: 12px 16px;
+            border: 2px solid #dee2e6;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95em;
+            transition: all 0.3s;
+            position: relative;
+            font-weight: 500;
+        }
+
+        .criterion-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .criterion-btn.essential {
+            background: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+
+        .criterion-btn.desired {
+            background: #0dcaf0;
+            color: white;
+            border-color: #0dcaf0;
+        }
+
+        .criterion-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .results-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #e9ecef;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .results-header h2 {
+            color: #495057;
+            font-size: 1.5em;
+        }
+
+        .results-count {
+            background: #667eea;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .reset-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .reset-btn:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .dog-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s;
+        }
+
+        .dog-card:hover {
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .dog-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .dog-name {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #212529;
+        }
+
+        .match-score {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        .dog-traits {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .trait-tag {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+
+        .trait-matched {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .trait-missing {
+            background: #f8d7da;
+            color: #842029;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+
+        .no-results-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .criteria-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🐕 Trouvez votre chien idéal</h1>
+            <p class="subtitle">Sélectionnez vos critères essentiels et souhaités pour trouver la race parfaite</p>
+        </header>
+
+        <div class="main-content">
+            <div class="criteria-section">
+                <div class="priority-selector">
+                    <h3>Mode de sélection :</h3>
+                    <div class="priority-buttons">
+                        <button class="priority-btn active-desired" onclick="setPriorityMode('desired')">
+                            Souhaité (bleu)
+                        </button>
+                        <button class="priority-btn" onclick="setPriorityMode('essential')">
+                            Essentiel (rouge)
+                        </button>
+                    </div>
+                    <p style="margin-top: 10px; font-size: 0.9em; color: #6c757d;">
+                        Cliquez sur un critère pour le marquer selon le mode sélectionné
+                    </p>
+                </div>
+
+                <div class="category">
+                    <h3><span class="category-icon">📏</span> Taille</h3>
+                    <div class="criteria-grid">
+                        <button class="criterion-btn" data-category="taille" data-criterion="petit" onclick="toggleCriterion(this)">Petit</button>
+                        <button class="criterion-btn" data-category="taille" data-criterion="moyen" onclick="toggleCriterion(this)">Moyen</button>
+                        <button class="criterion-btn" data-category="taille" data-criterion="grand" onclick="toggleCriterion(this)">Grand</button>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <h3><span class="category-icon">✂️</span> Pelage</h3>
+                    <div class="criteria-grid">
+                        <button class="criterion-btn" data-criterion="poils_courts" onclick="toggleCriterion(this)">Poils courts</button>
+                        <button class="criterion-btn" data-criterion="poils_longs" onclick="toggleCriterion(this)">Poils longs</button>
+                        <button class="criterion-btn" data-criterion="peu_entretien" onclick="toggleCriterion(this)">Peu d'entretien</button>
+                        <button class="criterion-btn" data-criterion="hypoallergenique" onclick="toggleCriterion(this)">Hypoallergénique</button>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <h3><span class="category-icon">🎯</span> Comportement</h3>
+                    <div class="criteria-grid">
+                        <button class="criterion-btn" data-criterion="calme" onclick="toggleCriterion(this)">Calme</button>
+                        <button class="criterion-btn" data-criterion="energique" onclick="toggleCriterion(this)">Énergique</button>
+                        <button class="criterion-btn" data-criterion="affectueux" onclick="toggleCriterion(this)">Affectueux</button>
+                        <button class="criterion-btn" data-criterion="independant" onclick="toggleCriterion(this)">Indépendant</button>
+                        <button class="criterion-btn" data-criterion="joueur" onclick="toggleCriterion(this)">Joueur</button>
+                        <button class="criterion-btn" data-criterion="protecteur" onclick="toggleCriterion(this)">Protecteur</button>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <h3><span class="category-icon">🏃</span> Activité</h3>
+                    <div class="criteria-grid">
+                        <button class="criterion-btn" data-criterion="peu_sport" onclick="toggleCriterion(this)">Peu de sport</button>
+                        <button class="criterion-btn" data-criterion="sport_modere" onclick="toggleCriterion(this)">Sport modéré</button>
+                        <button class="criterion-btn" data-criterion="tres_sportif" onclick="toggleCriterion(this)">Très sportif</button>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <h3><span class="category-icon">👨‍👩‍👧‍👦</span> Adaptation</h3>
+                    <div class="criteria-grid">
+                        <button class="criterion-btn" data-criterion="bon_enfants" onclick="toggleCriterion(this)">Bon avec enfants</button>
+                        <button class="criterion-btn" data-criterion="bon_animaux" onclick="toggleCriterion(this)">Bon avec animaux</button>
+                        <button class="criterion-btn" data-criterion="appartement" onclick="toggleCriterion(this)">Vie en appartement</button>
+                        <button class="criterion-btn" data-criterion="facile_eduquer" onclick="toggleCriterion(this)">Facile à éduquer</button>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <h3><span class="category-icon">💰</span> Coûts</h3>
+                    <div class="criteria-grid">
+                        <button class="criterion-btn" data-criterion="cout_achat_faible" onclick="toggleCriterion(this)">Achat abordable</button>
+                        <button class="criterion-btn" data-criterion="cout_entretien_faible" onclick="toggleCriterion(this)">Entretien économique</button>
+                        <button class="criterion-btn" data-criterion="cout_nourriture_faible" onclick="toggleCriterion(this)">Nourriture économique</button>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <h3><span class="category-icon">🔊</span> Autres traits</h3>
+                    <div class="criteria-grid">
+                        <button class="criterion-btn" data-criterion="peu_aboie" onclick="toggleCriterion(this)">Aboie peu</button>
+                        <button class="criterion-btn" data-criterion="peu_bave" onclick="toggleCriterion(this)">Bave peu</button>
+                        <button class="criterion-btn" data-criterion="intelligent" onclick="toggleCriterion(this)">Intelligent</button>
+                        <button class="criterion-btn" data-criterion="vigilant" onclick="toggleCriterion(this)">Vigilant</button>
+                    </div>
+                </div>
+
+                <button class="reset-btn" onclick="resetAll()">🔄 Réinitialiser tout</button>
+            </div>
+
+            <div class="results-section">
+                <div class="results-header">
+                    <h2>Résultats</h2>
+                    <span class="results-count" id="resultsCount">0 race(s)</span>
+                </div>
+                <div id="resultsContainer">
+                    <div class="no-results">
+                        <div class="no-results-icon">🐶</div>
+                        <h3>Sélectionnez des critères pour commencer</h3>
+                        <p>Choisissez vos critères essentiels (rouges) et souhaités (bleus)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPriorityMode = 'desired';
+        const selectedCriteria = {
+            essential: new Set(),
+            desired: new Set()
+        };
+
+        const dogBreeds = [
+            {
+                name: "Labrador Retriever",
+                traits: ["grand", "poils_courts", "peu_entretien", "energique", "affectueux", "joueur", "tres_sportif", "bon_enfants", "bon_animaux", "facile_eduquer", "intelligent", "peu_aboie", "peu_bave"]
+            },
+            {
+                name: "Berger Allemand",
+                traits: ["grand", "poils_longs", "energique", "protecteur", "intelligent", "tres_sportif", "bon_enfants", "facile_eduquer", "vigilant", "peu_bave"]
+            },
+            {
+                name: "Golden Retriever",
+                traits: ["grand", "poils_longs", "affectueux", "energique", "joueur", "tres_sportif", "bon_enfants", "bon_animaux", "facile_eduquer", "intelligent", "peu_aboie"]
+            },
+            {
+                name: "Bouledogue Français",
+                traits: ["petit", "poils_courts", "peu_entretien", "calme", "affectueux", "peu_sport", "appartement", "bon_enfants", "peu_aboie", "cout_nourriture_faible"]
+            },
+            {
+                name: "Caniche",
+                traits: ["moyen", "poils_longs", "hypoallergenique", "intelligent", "affectueux", "joueur", "sport_modere", "bon_enfants", "facile_eduquer", "peu_bave", "peu_aboie"]
+            },
+            {
+                name: "Beagle",
+                traits: ["moyen", "poils_courts", "peu_entretien", "energique", "joueur", "affectueux", "tres_sportif", "bon_enfants", "bon_animaux", "cout_entretien_faible"]
+            },
+            {
+                name: "Chihuahua",
+                traits: ["petit", "poils_courts", "peu_entretien", "vigilant", "protecteur", "peu_sport", "appartement", "cout_achat_faible", "cout_nourriture_faible", "cout_entretien_faible"]
+            },
+            {
+                name: "Berger Australien",
+                traits: ["moyen", "poils_longs", "energique", "intelligent", "joueur", "tres_sportif", "protecteur", "bon_enfants", "facile_eduquer", "vigilant"]
+            },
+            {
+                name: "Yorkshire Terrier",
+                traits: ["petit", "poils_longs", "hypoallergenique", "affectueux", "vigilant", "peu_sport", "appartement", "intelligent", "cout_nourriture_faible"]
+            },
+            {
+                name: "Boxer",
+                traits: ["grand", "poils_courts", "peu_entretien", "energique", "joueur", "affectueux", "protecteur", "tres_sportif", "bon_enfants", "intelligent"]
+            },
+            {
+                name: "Cavalier King Charles",
+                traits: ["petit", "poils_longs", "calme", "affectueux", "peu_sport", "appartement", "bon_enfants", "bon_animaux", "facile_eduquer", "peu_aboie"]
+            },
+            {
+                name: "Husky Sibérien",
+                traits: ["grand", "poils_longs", "energique", "independant", "joueur", "tres_sportif", "bon_animaux", "intelligent", "vigilant"]
+            },
+            {
+                name: "Shih Tzu",
+                traits: ["petit", "poils_longs", "calme", "affectueux", "peu_sport", "appartement", "bon_enfants", "peu_aboie", "cout_nourriture_faible"]
+            },
+            {
+                name: "Doberman",
+                traits: ["grand", "poils_courts", "peu_entretien", "energique", "protecteur", "intelligent", "tres_sportif", "facile_eduquer", "vigilant", "peu_bave"]
+            },
+            {
+                name: "Carlin",
+                traits: ["petit", "poils_courts", "peu_entretien", "calme", "affectueux", "peu_sport", "appartement", "bon_enfants", "peu_aboie", "cout_nourriture_faible"]
+            },
+            {
+                name: "Border Collie",
+                traits: ["moyen", "poils_longs", "energique", "intelligent", "joueur", "tres_sportif", "facile_eduquer", "vigilant", "protecteur"]
+            },
+            {
+                name: "Bichon Frisé",
+                traits: ["petit", "poils_longs", "hypoallergenique", "affectueux", "joueur", "sport_modere", "appartement", "bon_enfants", "peu_aboie", "peu_bave"]
+            },
+            {
+                name: "Rottweiler",
+                traits: ["grand", "poils_courts", "peu_entretien", "protecteur", "calme", "intelligent", "sport_modere", "vigilant", "facile_eduquer"]
+            },
+            {
+                name: "Jack Russell Terrier",
+                traits: ["petit", "poils_courts", "peu_entretien", "energique", "joueur", "tres_sportif", "intelligent", "vigilant", "cout_entretien_faible"]
+            },
+            {
+                name: "Terre-Neuve",
+                traits: ["grand", "poils_longs", "calme", "affectueux", "protecteur", "sport_modere", "bon_enfants", "bon_animaux", "intelligent", "facile_eduquer"]
+            }
+        ];
+
+        const exclusiveGroups = [
+            { category: "taille", values: ["petit", "moyen", "grand"] },
+            { category: "activite", values: ["peu_sport", "sport_modere", "tres_sportif"] }
+        ];
+
+        function setPriorityMode(mode) {
+            currentPriorityMode = mode;
+            document.querySelectorAll('.priority-btn').forEach(btn => {
+                btn.classList.remove('active-essential', 'active-desired');
+            });
+            event.target.classList.add(mode === 'essential' ? 'active-essential' : 'active-desired');
+        }
+
+        function toggleCriterion(btn) {
+            const criterion = btn.dataset.criterion;
+            const category = btn.dataset.category;
+
+            if (selectedCriteria.essential.has(criterion)) {
+                selectedCriteria.essential.delete(criterion);
+                btn.classList.remove('essential');
+            } else if (selectedCriteria.desired.has(criterion)) {
+                selectedCriteria.desired.delete(criterion);
+                btn.classList.remove('desired');
+            } else {
+                if (currentPriorityMode === 'essential') {
+                    selectedCriteria.essential.add(criterion);
+                    btn.classList.add('essential');
+                } else {
+                    selectedCriteria.desired.add(criterion);
+                    btn.classList.add('desired');
+                }
+
+                if (category) {
+                    const group = exclusiveGroups.find(g => g.category === category);
+                    if (group) {
+                        group.values.forEach(val => {
+                            if (val !== criterion) {
+                                const otherBtn = document.querySelector(`[data-criterion="${val}"]`);
+                                if (otherBtn) {
+                                    otherBtn.disabled = true;
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+
+            updateExclusiveButtons();
+            updateResults();
+        }
+
+        function updateExclusiveButtons() {
+            exclusiveGroups.forEach(group => {
+                const selectedInGroup = group.values.filter(val => 
+                    selectedCriteria.essential.has(val) || selectedCriteria.desired.has(val)
+                );
+
+                group.values.forEach(val => {
+                    const btn = document.querySelector(`[data-criterion="${val}"]`);
+                    if (btn) {
+                        if (selectedInGroup.length > 0 && !selectedInGroup.includes(val)) {
+                            btn.disabled = true;
+                        } else {
+                            btn.disabled = false;
+                        }
+                    }
+                });
+            });
+        }
+
+        function updateResults() {
+            const allSelected = [...selectedCriteria.essential, ...selectedCriteria.desired];
+            
+            if (allSelected.length === 0) {
+                document.getElementById('resultsContainer').innerHTML = `
+                    <div class="no-results">
+                        <div class="no-results-icon">🐶</div>
+                        <h3>Sélectionnez des critères pour commencer</h3>
+                        <p>Choisissez vos critères essentiels (rouges) et souhaités (bleus)</p>
+                    </div>
+                `;
+                document.getElementById('resultsCount').textContent = '0 race(s)';
+                return;
+            }
+
+            const results = dogBreeds.map(dog => {
+                const essentialMatches = [...selectedCriteria.essential].filter(c => dog.traits.includes(c)).length;
+                const essentialTotal = selectedCriteria.essential.size;
+                const desiredMatches = [...selectedCriteria.desired].filter(c => dog.traits.includes(c)).length;
+                const desiredTotal = selectedCriteria.desired.size;
+
+                if (essentialTotal > 0 && essentialMatches < essentialTotal) {
+                    return null;
+                }
+
+                const totalMatches = essentialMatches + desiredMatches;
+                const totalCriteria = essentialTotal + desiredTotal;
+                const score = totalCriteria > 0 ? Math.round((totalMatches / totalCriteria) * 100) : 0;
+
+                return {
+                    dog,
+                    score,
+                    essentialMatches,
+                    desiredMatches,
+                    matchedTraits: allSelected.filter(c => dog.traits.includes(c)),
+                    missingTraits: allSelected.filter(c => !dog.traits.includes(c))
+                };
+            }).filter(r => r !== null && r.score > 0);
+
+            results.sort((a, b) => b.score - a.score);
+
+            if (results.length === 0) {
+                document.getElementById('resultsContainer').innerHTML = `
+                    <div class="no-results">
+                        <div class="no-results-icon">😢</div>
+                        <h3>Aucune race trouvée</h3>
+                        <p>Essayez de réduire vos critères essentiels ou d'ajuster vos sélections</p>
+                    </div>
+                `;
+                document.getElementById('resultsCount').textContent = '0 race(s)';
+                return;
+            }
+
+            document.getElementById('resultsCount').textContent = `${results.length} race(s)`;
+
+            const traitNames = {
+                petit: "Petit", moyen: "Moyen", grand: "Grand",
+                poils_courts: "Poils courts", poils_longs: "Poils longs",
+                peu_entretien: "Peu d'entretien", hypoallergenique: "Hypoallergénique",
+                calme: "Calme", energique: "Énergique", affectueux: "Affectueux",
+                independant: "Indépendant", joueur: "Joueur", protecteur: "Protecteur",
+                peu_sport: "Peu de sport", sport_modere: "Sport modéré", tres_sportif: "Très sportif",
+                bon_enfants: "Bon avec enfants", bon_animaux: "Bon avec animaux",
+                appartement: "Appartement", facile_eduquer: "Facile à éduquer",
+                cout_achat_faible: "Achat abordable", cout_entretien_faible: "Entretien économique",
+                cout_nourriture_faible: "Nourriture économique",
+                peu_aboie: "Aboie peu", peu_bave: "Bave peu",
+                intelligent: "Intelligent", vigilant: "Vigilant"
+            };
+
+            document.getElementById('resultsContainer').innerHTML = results.map(result => `
+                <div class="dog-card">
+                    <div class="dog-header">
+                        <div class="dog-name">${result.dog.name}</div>
+                        <div class="match-score">${result.score}%</div>
+                    </div>
+                    <div class="dog-traits">
+                        ${result.matchedTraits.map(t => 
+                            `<span class="trait-tag trait-matched">✓ ${traitNames[t]}</span>`
+                        ).join('')}
+                        ${result.missingTraits.map(t => 
+                            `<span class="trait-tag trait-missing">✗ ${traitNames[t]}</span>`
+                        ).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function resetAll() {
+            selectedCriteria.essential.clear();
+            selectedCriteria.desired.clear();
+            
+            document.querySelectorAll('.criterion-btn').forEach(btn => {
+                btn.classList.remove('essential', 'desired');
+                btn.disabled = false;
+            });
+            
+            updateResults();
+        }
+
+        updateResults();
+    </script>
+</body>
+</html>
