@@ -165,6 +165,61 @@
             border: 2px solid #e9ecef;
         }
 
+        .selection-summary {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 2px solid #e9ecef;
+        }
+
+        .selection-summary h4 {
+            color: #495057;
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+
+        .summary-section {
+            margin-bottom: 10px;
+        }
+
+        .summary-label {
+            font-weight: 600;
+            margin-right: 8px;
+            display: inline-block;
+        }
+
+        .summary-essential {
+            color: #dc3545;
+        }
+
+        .summary-desired {
+            color: #0dcaf0;
+        }
+
+        .summary-tags {
+            display: inline-flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .summary-tag {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+
+        .summary-tag-essential {
+            background: #dc3545;
+            color: white;
+        }
+
+        .summary-tag-desired {
+            background: #0dcaf0;
+            color: white;
+        }
+
         .results-header {
             display: flex;
             justify-content: space-between;
@@ -219,7 +274,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
         }
 
         .dog-name {
@@ -235,6 +290,25 @@
             border-radius: 20px;
             font-weight: 700;
             font-size: 1.1em;
+        }
+
+        .match-explanation {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            font-size: 0.9em;
+            color: #495057;
+            border-left: 4px solid #667eea;
+        }
+
+        .criteria-section-result {
+            margin-bottom: 10px;
+        }
+
+        .criteria-section-result strong {
+            display: block;
+            margin-bottom: 6px;
         }
 
         .dog-traits {
@@ -382,6 +456,12 @@
             </div>
 
             <div class="results-section">
+                <div class="selection-summary" id="selectionSummary" style="display: none;">
+                    <h4>📋 Vos critères sélectionnés :</h4>
+                    <div class="summary-section" id="essentialSummary"></div>
+                    <div class="summary-section" id="desiredSummary"></div>
+                </div>
+
                 <div class="results-header">
                     <h2>Résultats</h2>
                     <span class="results-count" id="resultsCount">0 race(s)</span>
@@ -560,6 +640,39 @@
         function updateResults() {
             const allSelected = [...selectedCriteria.essential, ...selectedCriteria.desired];
             
+            // Update selection summary
+            if (allSelected.length > 0) {
+                document.getElementById('selectionSummary').style.display = 'block';
+                
+                const traitNames = getTraitNames();
+                
+                if (selectedCriteria.essential.size > 0) {
+                    const essentialTags = [...selectedCriteria.essential].map(c => 
+                        `<span class="summary-tag summary-tag-essential">${traitNames[c]}</span>`
+                    ).join('');
+                    document.getElementById('essentialSummary').innerHTML = `
+                        <span class="summary-label summary-essential">✓ Essentiels :</span>
+                        <div class="summary-tags">${essentialTags}</div>
+                    `;
+                } else {
+                    document.getElementById('essentialSummary').innerHTML = '';
+                }
+                
+                if (selectedCriteria.desired.size > 0) {
+                    const desiredTags = [...selectedCriteria.desired].map(c => 
+                        `<span class="summary-tag summary-tag-desired">${traitNames[c]}</span>`
+                    ).join('');
+                    document.getElementById('desiredSummary').innerHTML = `
+                        <span class="summary-label summary-desired">★ Souhaités :</span>
+                        <div class="summary-tags">${desiredTags}</div>
+                    `;
+                } else {
+                    document.getElementById('desiredSummary').innerHTML = '';
+                }
+            } else {
+                document.getElementById('selectionSummary').style.display = 'none';
+            }
+            
             if (allSelected.length === 0) {
                 document.getElementById('resultsContainer').innerHTML = `
                     <div class="no-results">
@@ -590,7 +703,9 @@
                     dog,
                     score,
                     essentialMatches,
+                    essentialTotal,
                     desiredMatches,
+                    desiredTotal,
                     matchedTraits: allSelected.filter(c => dog.traits.includes(c)),
                     missingTraits: allSelected.filter(c => !dog.traits.includes(c))
                 };
@@ -612,7 +727,43 @@
 
             document.getElementById('resultsCount').textContent = `${results.length} race(s)`;
 
-            const traitNames = {
+            const traitNames = getTraitNames();
+
+            document.getElementById('resultsContainer').innerHTML = results.map(result => {
+                let explanation = '';
+                
+                if (result.essentialTotal > 0) {
+                    explanation += `<div class="criteria-section-result"><strong style="color: #dc3545;">Critères essentiels : ${result.essentialMatches}/${result.essentialTotal} ✓</strong></div>`;
+                }
+                
+                if (result.desiredTotal > 0) {
+                    const desiredPercent = Math.round((result.desiredMatches / result.desiredTotal) * 100);
+                    explanation += `<div class="criteria-section-result"><strong style="color: #0dcaf0;">Critères souhaités : ${result.desiredMatches}/${result.desiredTotal} (${desiredPercent}%)</strong></div>`;
+                }
+                
+                return `
+                <div class="dog-card">
+                    <div class="dog-header">
+                        <div class="dog-name">${result.dog.name}</div>
+                        <div class="match-score">${result.score}%</div>
+                    </div>
+                    <div class="match-explanation">
+                        ${explanation}
+                    </div>
+                    <div class="dog-traits">
+                        ${result.matchedTraits.map(t => 
+                            `<span class="trait-tag trait-matched">✓ ${traitNames[t]}</span>`
+                        ).join('')}
+                        ${result.missingTraits.map(t => 
+                            `<span class="trait-tag trait-missing">✗ ${traitNames[t]}</span>`
+                        ).join('')}
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        function getTraitNames() {
+            return {
                 petit: "Petit", moyen: "Moyen", grand: "Grand",
                 poils_courts: "Poils courts", poils_longs: "Poils longs",
                 peu_entretien: "Peu d'entretien", hypoallergenique: "Hypoallergénique",
@@ -626,23 +777,6 @@
                 peu_aboie: "Aboie peu", peu_bave: "Bave peu",
                 intelligent: "Intelligent", vigilant: "Vigilant"
             };
-
-            document.getElementById('resultsContainer').innerHTML = results.map(result => `
-                <div class="dog-card">
-                    <div class="dog-header">
-                        <div class="dog-name">${result.dog.name}</div>
-                        <div class="match-score">${result.score}%</div>
-                    </div>
-                    <div class="dog-traits">
-                        ${result.matchedTraits.map(t => 
-                            `<span class="trait-tag trait-matched">✓ ${traitNames[t]}</span>`
-                        ).join('')}
-                        ${result.missingTraits.map(t => 
-                            `<span class="trait-tag trait-missing">✗ ${traitNames[t]}</span>`
-                        ).join('')}
-                    </div>
-                </div>
-            `).join('');
         }
 
         function resetAll() {
